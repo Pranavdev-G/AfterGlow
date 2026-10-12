@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <defs>
+    <linearGradient id="ember" x1="36" y1="34" x2="216" y2="221" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB24D"/>
+      <stop offset="1" stop-color="#FF6500"/>
+    </linearGradient>
+    <filter id="glow" x="0" y="0" width="256" height="256" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <circle cx="128" cy="128" r="87" stroke="url(#ember)" stroke-width="8"/>
+  <circle cx="128" cy="128" r="53" stroke="#FFE1BD" stroke-opacity=".9" stroke-width="5"/>
+  <circle cx="128" cy="128" r="18" fill="url(#ember)"/>
+  <circle cx="128" cy="87" r="9" fill="#FFAA54"/>
+  <circle cx="92.5" cy="148.5" r="9" fill="#FFAA54"/>
+  <circle cx="163.5" cy="148.5" r="9" fill="#FFAA54"/>
+  <path d="M32 169c40 38 122 35 183-8" stroke="url(#ember)" stroke-width="9" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="211" cy="159" r="9" fill="#FFF0D6" stroke="#FF7A00" stroke-width="5"/>
+</svg>

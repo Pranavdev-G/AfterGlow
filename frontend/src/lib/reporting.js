@@ -1,0 +1,1 @@
+export function summarizeUtilization(rows,screenCount,minutesPerDay=15*60){const used=(rows||[]).reduce((sum,x)=>sum+Math.max(0,new Date(x.endAt)-new Date(x.startAt))/60000,0);return screenCount?Math.min(100,Math.round(used/(screenCount*minutesPerDay)*100)):0;}

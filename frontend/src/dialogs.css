@@ -1,0 +1,1 @@
+.dialog-backdrop{position:fixed;inset:0;z-index:90;background:#000b;display:grid;place-items:center;padding:18px;backdrop-filter:blur(6px)}.dialog{width:min(100%,440px);position:relative;box-shadow:0 20px 70px #000}.dialog h2{margin-top:12px}.dialog-close{position:absolute;right:12px;top:12px}
