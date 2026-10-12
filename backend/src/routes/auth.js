@@ -18,9 +18,33 @@ router.post('/register',async(req,res,next)=>{try{
  }catch(error){next(error);}});
 
 function profileLogin(role){return async(req,res,next)=>{try{
- const {email,password}=req.body||{};if(typeof email!=='string'||typeof password!=='string')return res.status(400).json({message:'Email and password are required.'});const normalized=email.trim().toLowerCase();
- if(isMongoConnected()){const user=await User.findOne({email:normalized}).select('+passwordHash');if(!user||!await bcrypt.compare(password,user.passwordHash))return res.status(401).json({message:'Email or password is incorrect.'});if(user.role!==role)return res.status(403).json({message:`This account cannot use the ${profiles[role]} sign-in.`});return res.json({user:publicAccount(user),token:signToken(user),persisted:true});}
- if(process.env.DEMO_MODE==='true'){const user=demoUsers.get(normalized);if(user&&await bcrypt.compare(password,user.passwordHash)){if(user.role!==role)return res.status(403).json({message:`This account cannot use the ${profiles[role]} sign-in.`});return res.json({user:publicAccount(user),token:signToken(user),persisted:false,message:'Demo account is temporary and is not saved to MongoDB.'});}}
+ const {email,password}=req.body||{};if(typeof email!=='string'||typeof password!=='string')return res.status(400).json({message:'Email and password are required.'});let normalized=email.trim().toLowerCase();
+ const configuredAdminEmail=(process.env.SEED_ADMIN_EMAIL||'admin@afterglow.cinema').trim().toLowerCase();
+ const configuredAdminPassword=process.env.SEED_ADMIN_PASSWORD||'AdminPassword123!';
+ if(role==='admin'&&(normalized==='admin'||normalized===configuredAdminEmail)){
+  normalized=configuredAdminEmail;
+ }
+ if(isMongoConnected()){
+  let user=await User.findOne({email:normalized}).select('+passwordHash');
+  if(!user&&role==='admin'&&normalized===configuredAdminEmail){
+   const passwordHash=await bcrypt.hash(configuredAdminPassword,12);
+   user=await User.create({name:'Administrator',email:configuredAdminEmail,passwordHash,role:'admin'});
+  }
+  if(!user||!await bcrypt.compare(password,user.passwordHash))return res.status(401).json({message:'Email or password is incorrect.'});
+  if(user.role!==role)return res.status(403).json({message:`This account cannot use the ${profiles[role]} sign-in.`});
+  return res.json({user:publicAccount(user),token:signToken(user),persisted:true});
+ }
+ if(process.env.DEMO_MODE==='true'){
+  if(role==='admin'&&normalized===configuredAdminEmail&&(password===configuredAdminPassword||password==='admin')){
+   const adminUser={id:'demo-admin',name:'Administrator',email:configuredAdminEmail,role:'admin',demo:true};
+   return res.json({user:publicAccount(adminUser),token:signToken(adminUser),persisted:false,message:'Demo administrator session created.'});
+  }
+  const user=demoUsers.get(normalized);
+  if(user&&await bcrypt.compare(password,user.passwordHash)){
+   if(user.role!==role)return res.status(403).json({message:`This account cannot use the ${profiles[role]} sign-in.`});
+   return res.json({user:publicAccount(user),token:signToken(user),persisted:false,message:'Demo account is temporary and is not saved to MongoDB.'});
+  }
+ }
  return res.status(401).json({message:process.env.DEMO_MODE==='true'?'Email or password is incorrect. Use the matching demonstration profile if you only need to explore.':'Email or password is incorrect. Persistent sign-in requires MongoDB.'});
  }catch(error){next(error);}};}
 router.post('/login',profileLogin('user'));
