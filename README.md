@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Afterglow — Movie & Show Management System
 
 A responsive black-and-ember movie catalogue and fictional theatre/screen scheduling application. Poster copyrights remain with their respective owners; the fictional Doctor Doom/Kingdom of Ash concept art, theatre locations, screening schedules and release submissions are demonstration data. The application does not provide movie streaming, ticket/seat booking, payments, subscriptions or licensing functions.
@@ -78,3 +79,7 @@ Production requires a separate production-scoped `MONGODB_URI` and a long, uniqu
 - The supplied Figma URL returned HTTP 403, so its frames could not be inspected. The approved written brief was used as the source of layout requirements.
 - Real catalogue titles use bundled poster images with source attribution on their detail pages. Poster copyrights remain with their respective rights holders; confirm reuse rights before a wider public or commercial launch. Doctor Doom and Kingdom of Ash are fictional demo entries; Doctor Doom is configured for clearly labeled non-official concept artwork, not a real movie poster. Theatre names, locations and all sample operational reports are fictional.
 - Run `npm run check` and `npm test` from the root for local production-build and schedule-rule checks; do not infer Mongo persistence from demo-mode responses.
+=======
+# AfterGlow
+Movie and Show Management System
+>>>>>>> d9882b776d40db6f17a1a480fe11d7eeeb3cb33e
